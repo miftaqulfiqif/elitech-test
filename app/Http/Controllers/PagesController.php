@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserProfile;
+use App\Models\UserSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
 {
@@ -15,9 +18,17 @@ class PagesController extends Controller
         return view('pages.auth.sign-up');
     }
 
-    public function profileEdit()
+    public function editProfile()
     {
-        return view('pages.profile-edit');
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.sign-in');
+        }
+        $userProfile = UserProfile::where('user_id', $user->id)->first();
+        $feedRow = UserSetting::where('user_profile_id', $userProfile->id)->first();
+
+
+        return view('pages.edit-profile', compact('user', 'userProfile', 'feedRow'));
     }
 
     public function profileSetting()

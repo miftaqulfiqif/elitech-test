@@ -8,11 +8,8 @@ class UserProfile extends Model
 {
     protected $table = 'user_profiles';
     protected $fillable = [
-        'nama',
+        'name',
         'bio',
-        'user_id',
-        'setting_id',
-        'content_id',
-        'profile_picture_id'
+        'user_id'
     ];
 }

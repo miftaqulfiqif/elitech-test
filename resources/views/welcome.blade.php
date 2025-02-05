@@ -9,7 +9,8 @@
             <div class="flex items-center justify-center">
                 <div
                     class="w-[100px] h-[100px] md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px] border rounded-full overflow-hidden">
-                    <img src="https://picsum.photos/500" alt="Avatar" class="w-full h-full object-cover">
+                    <img src="{{ asset($userPicture->file_path ? 'storage/' . $userPicture->file_path : 'assets/icons/person.png') }}"
+                        alt="Profile Picture" class="w-full h-full object-cover">
                 </div>
             </div>
             {{-- End Profile Picture --}}
@@ -18,7 +19,7 @@
             <div class="flex flex-col gap-4 p-4 w-full">
                 <div class="flex flex-row  gap-4 items-center justify-between">
                     <div class="">
-                        <p class="text-xl lg:text-2xl">username</p>
+                        <p class="text-xl lg:text-2xl">{{ $user->username }}</p>
                     </div>
 
                     {{-- Start Mobile Menu --}}
@@ -35,7 +36,7 @@
                         </svg>
                         <div id="menu-content" style="z-index: 9999;"
                             class="hidden absolute flex-col gap-2 top-12 right-2 bg-slate-800 p-2 rounded-lg">
-                            <a href="{{ route('pages.profile-edit') }}"
+                            <a href="{{ route('pages.edit-profile') }}"
                                 class="hover:bg-slate-700 bg-slate-900 px-4 py-2 rounded-lg">Edit Profile</a>
                             <a href="{{ route('pages.view-archive') }}"
                                 class="hover:bg-slate-700 bg-slate-900 px-4 py-2 rounded-lg">View Archive</a>
@@ -53,7 +54,7 @@
 
                     {{-- Start Desktop Menu --}}
                     <div class="flex-row gap-4 hidden md:flex lg:flex">
-                        <a href="{{ route('pages.profile-edit') }}"
+                        <a href="{{ route('pages.edit-profile') }}"
                             class="px-4 py-2 bg-blue-500 hover:bg-blue-400 rounded-xl ">Edit
                             Profile</a>
                         <a href="{{ route('pages.view-archive') }}"
@@ -86,15 +87,13 @@
                     {{-- End Desktop Menu --}}
                 </div>
                 <div class="flex flex-col gap-1">
-                    <p class="text-sm lg:text-lg">Nama Lengkap</p>
-                    @php
-                        $bio =
-                            'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor beatae quibusdam magni nulla? Praesentium cum aspernatur illo pariatur nemo repellat consequatur veniam velit? Dolorum at culpa asperiores aperiam, deserunt totam! Vitae illum tenetur, aspernatur fugiat accusantium similique natus ipsum enim earum expedita exercitationem animi nihil eveniet excepturi dolorem incidunt amet reiciendis veniam aliquid quae odio distinctio tempore ad. Laboriosam rerum ipsa obcaecati nemo placeat? Sit minima quos fugit, rerum cum ratione? Reiciendis nemo magnam consectetur sint tempore ratione at eveniet assumenda! Laudantium numquam odit aliquid vitae totam aut earum saepe magnam voluptatem, doloremque, odio commodi corrupti sed labore facere quam unde deleniti similique tempore! Sequi non similique beatae laboriosam dicta temporibus repellendus! Delectus qui quae tempora quis eligendi eos odio, illum totam officiis, omnis nemo excepturi, accusantium voluptatum tempore. Consequatur soluta, dolore, aliquam ipsam cumque ratione, facilis molestiae illum rem magni modi architecto reiciendis harum fuga veritatis inventore minus id. Doloremque, quos accusantium. Fugit minima veritatis voluptas provident ad ipsum doloremque, explicabo exercitationem magnam, corporis tempora iure quos cupiditate cum consequuntur delectus! Enim id, totam placeat ipsum, eligendi modi dolore, quae optio beatae excepturi nobis quam cum doloremque officia omnis tenetur rerum sint in dolorum expedita. Quo doloremque nostrum facere quos autem ducimus placeat aliquid explicabo, esse repudiandae quaerat tempora perferendis blanditiis ex distinctio sint in? Optio impedit aliquam in, suscipit est similique recusandae, odio repudiandae animi nostrum, hic eius laborum ea eaque nihil. Amet, atque totam expedita quia magni suscipit aut, asperiores officiis, in nulla obcaecati alias. Totam similique dolor suscipit nostrum, quia alias.';
-                    @endphp
-                    <p class="text-xs lg:text-sm text-gray-400 ">
-                        {{ Str::limit($bio, 100) }}
+                    <p class="text-sm lg:text-lg">{{ $user->name }}</p>
+                    <p class="text-xs lg:text-sm text-gray-400 " id="bio">
+                        {{ Str::limit($userProfile->bio, 100) }}
                     </p>
-                    <a href="#" class="text-xs lg:text-sm text-gray-400 underline mt-3">Selengkapnya ...</a>
+                    <span id="more_bio" class="text-xs lg:text-sm text-gray-400 underline mt-3 cursor-pointer">Selengkapnya
+                        ...</span>
+                    <script></script>
                 </div>
             </div>
             {{-- End Profile Info --}}
@@ -176,6 +175,22 @@
             }
         });
         // Script Menu
+
+        // Script Menampilkan Bio
+        let isLimit = true;
+        document.getElementById('more_bio').addEventListener('click', function() {
+            let bio = document.getElementById('bio');
+            if (isLimit) {
+                bio.innerText = `{{ Str::limit($userProfile->bio, 100) }}`;
+                more_bio.innerText = "Selengkapnya ..."
+                isLimit = false;
+            } else {
+                bio.innerText = `{{ $userProfile->bio }}`;
+                more_bio.innerText = "Sembunyikan ..."
+                isLimit = true;
+            }
+        });
+        // Script Menampilkan Bio
     </script>
 
 @endsection

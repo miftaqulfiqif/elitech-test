@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserPicture;
+use App\Models\UserProfile;
+use App\Models\UserSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,36 +17,41 @@ class AuthController extends Controller
     public function signUp(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|same:confirm-password',
-            'confirm-password' => 'required|string|min:8|same:password',
+            'nama' => 'required|string|max:15',
+            'username' => 'required|string|unique:users,username',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8|same:confirm_password',
+            'confirm_password' => 'required|string|min:8|same:password',
         ]);
 
         DB::beginTransaction();
 
         try {
-            if ($request->input('password') != $request->input('confirm-password')) {
-                return back()->with('error', 'Password Tidak Sama')->withInput();
-            }
 
             $user = User::create([
                 'name' => $request->nama,
+                'email' => $request->email,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
             ]);
+            $userProfile = UserProfile::create([
+                'name' => $request->nama,
+                'bio' => "Hello World",
+                'user_id' => $user->id,
+            ]);
 
-            // DataUser::create([
-            //     'nama' => $request->nama,
-            //     'alamat' => $request->alamat,
-            //     'no_telp' => $request->no_telp,
-            //     'no_sim' => $request->no_sim,
-            //     'user_id' => $user->id
-            // ]);
+            UserSetting::create([
+                'user_profile_id' => $userProfile->id,
+                'feed_row_count' => 3
+            ]);
+
+            UserPicture::create([
+                'user_profile_id' => $userProfile->id,
+            ]);
+
 
             DB::commit();
-            return redirect()->route('login')->with('success', 'Berhasil mendaftar');
+            return redirect()->route('auth.sign-in')->with('success', 'Berhasil mendaftar');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());

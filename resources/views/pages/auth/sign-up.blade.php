@@ -13,7 +13,7 @@
                         Create an account
                     </h1>
                     <div class="">
-                        {{ session('error') }}
+                        <p class="text-red-500">{{ session('error') }}</p>
                     </div>
                     <form class="space-y-4 md:space-y-6" action="{{ route('auth.sign-up') }}" method="post"
                         enctype="multipart/form-data">
@@ -62,8 +62,7 @@
                             <label for="confirm_password"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
                                 password</label>
-                            <input type="confirm_password" name="confirm_password" id="confirm_password"
-                                placeholder="••••••••"
+                            <input type="password" name="confirm_password" id="confirm_password" placeholder="••••••••"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 required="">
                             @error('confirm_password')
