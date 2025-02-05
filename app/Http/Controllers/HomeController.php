@@ -9,9 +9,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // if (!Auth::check()) {
-        //     return redirect()->route('auth.sign-in');
-        // }
+        if (!Auth::check()) {
+            return redirect()->route('auth.sign-in');
+        }
 
         return view('welcome');
     }
