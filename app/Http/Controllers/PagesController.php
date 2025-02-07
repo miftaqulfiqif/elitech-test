@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UserPicture;
 use App\Models\UserProfile;
 use App\Models\UserSetting;
 use Illuminate\Http\Request;
@@ -21,22 +22,25 @@ class PagesController extends Controller
     public function editProfile()
     {
         $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('auth.sign-in');
-        }
-        $userProfile = UserProfile::where('user_id', $user->id)->first();
-        $feedRow = UserSetting::where('user_profile_id', $userProfile->id)->first();
 
+        $userProfile = $user->userProfile;
+        $userPicture = $userProfile->profilePicture;
+        $feedRow = $userProfile->setting->feed_row_count;
 
-        return view('pages.edit-profile', compact('user', 'userProfile', 'feedRow'));
+        return view('pages.edit-profile', compact('user', 'userProfile', 'userPicture', 'feedRow'));
     }
 
-    public function profileSetting()
+    public function createNewPost()
     {
-        return view('pages.profile-setting');
+        return view('pages.create-new-post');
     }
+
     public function viewArchive()
     {
-        return view('pages.view-archive');
+        $user = Auth::user();
+        $userProfile = $user->userProfile;
+        $contentArchive = $userProfile->contentsArchive()->with('content')->get();
+
+        return view('pages.view-archive', compact('contentArchive'));
     }
 }

@@ -8,7 +8,7 @@ class UserContent extends Model
 {
     protected $table = "user_contents";
     protected $fillable = [
-        'id_data_user',
+        'user_profile_id',
         'caption',
         'file_path',
     ];

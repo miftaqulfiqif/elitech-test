@@ -11,19 +11,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function signUp(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:15',
-            'username' => 'required|string|unique:users,username',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8|same:confirm_password',
-            'confirm_password' => 'required|string|min:8|same:password',
-        ]);
-
+        try {
+            $request->validate([
+                'nama' => 'required|string|max:255',
+                'username' => 'required|string|max:15|unique:users,username',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8|same:confirm_password',
+                'confirm_password' => 'required|string|min:8|same:password',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withInput()->withErrors($e->errors());
+        }
         DB::beginTransaction();
 
         try {
@@ -77,6 +81,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return view('pages.auth.sign-in');
+
+        return redirect()->route('auth.sign-in')->with('success', 'You have been signed out successfully');
     }
 }

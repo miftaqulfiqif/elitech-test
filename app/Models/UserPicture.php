@@ -11,4 +11,9 @@ class UserPicture extends Model
         'user_profile_id',
         'file_path'
     ];
+
+    public function userProfile()
+    {
+        $this->hasOne(UserProfile::class, 'user_profile_id', 'id');
+    }
 }

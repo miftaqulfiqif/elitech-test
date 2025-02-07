@@ -8,7 +8,13 @@ class UserArchive extends Model
 {
     protected $table = "user_archives";
     protected $fillable = [
-        'user_id',
+        'user_profile_id',
+        'thumbnail',
         'content_id',
     ];
+
+    public function content()
+    {
+        return $this->belongsTo(UserContent::class, 'content_id', 'id');
+    }
 }

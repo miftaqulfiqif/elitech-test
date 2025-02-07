@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_archives', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_profile_id')->constrained('user_profiles')->cascadeOnDelete();
             $table->foreignId('content_id')->constrained('user_contents')->cascadeOnDelete();
             $table->timestamps();
         });

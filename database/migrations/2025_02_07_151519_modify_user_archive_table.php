@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
-            $table->id();
-            $table->text('bio');
-            $table->timestamps();
+        Schema::table('user_archives', function (Blueprint $table) {
+            $table->string('thumbnail');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::table('user_archives', function (Blueprint $table) {
+            $table->dropColumn('thumbnail');
+        });
     }
 };

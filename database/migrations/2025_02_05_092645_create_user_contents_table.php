@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('user_contents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_profile_id')->constrained('user_profiles')->cascadeOnDelete();
             $table->text('caption');
             $table->string('file_path');
             $table->timestamps();
