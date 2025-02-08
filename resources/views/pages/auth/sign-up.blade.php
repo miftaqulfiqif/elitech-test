@@ -76,6 +76,8 @@
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+                        <input type="checkbox" onclick="showPassword()">
+                        <span class="text-white">Show Password</span></input>
 
                         <div class="flex items-start">
                         </div>
@@ -91,4 +93,17 @@
             </div>
         </div>
         REGISTER
+    @endsection
+
+    @section('script')
+        <script>
+            function showPassword() {
+                var password = document.getElementById("password");
+                if (password.type === "password") {
+                    password.type = "text";
+                } else {
+                    password.type = "password";
+                }
+            }
+        </script>
     @endsection

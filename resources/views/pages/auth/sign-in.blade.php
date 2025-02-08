@@ -63,6 +63,8 @@
                                     placeholder="Masukkan Password">
                             </div>
                         </div>
+                        <input type="checkbox" onclick="showPassword()">
+                        <span class="text-white">Show Password</span></input>
 
                         <button type="submit"
                             class="bg-blue-500 w-full text-white hover:bg-blue-400 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ringbg-blue-400">Log
@@ -78,4 +80,17 @@
         </div>
     </section>
 
+@endsection
+
+@section('script')
+    <script>
+        function showPassword() {
+            var password = document.getElementById("password");
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
 @endsection

@@ -1,6 +1,6 @@
 @extends('utils.index')
 
-@section('title', 'Welcome')
+@section('title', 'Elitech')
 
 @section('content')
     <div class="flex flex-col w-full px-2 md:px-10 lg:px-20 bg-slate-900 text-white gap-10">
